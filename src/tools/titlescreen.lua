@@ -43,6 +43,9 @@ function titlescreen:draw()
 end
 
 function titlescreen:startGame()
+  level.circleSize = level.circleMaxSize
+  level:warp("testLevel1")
+
   gamestate = playstate
   self.song:stop()
 
