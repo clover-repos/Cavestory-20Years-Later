@@ -154,8 +154,8 @@
  <objectgroup id="7" name="warp">
   <object id="30" name="testLevel1" type="door" x="402" y="282" width="12" height="21">
    <properties>
-    <property name="destX" type="int" value="488"/>
-    <property name="destY" type="int" value="226"/>
+    <property name="destX" type="int" value="487"/>
+    <property name="destY" type="int" value="225"/>
    </properties>
   </object>
  </objectgroup>

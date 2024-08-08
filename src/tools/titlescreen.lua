@@ -18,7 +18,7 @@ end
 
 function titlescreen:update()
   self.animation:update(publicDT)
-  titlescreen:pressed() --Input 
+  titlescreen:pressed() --Input
 
   titlescreen.buttonY = love.graphics.getHeight() / 2 - GetFontHeight() * titlescreen.lastButton * 1.5
   titlescreen.buttonX = love.graphics.getWidth() / 2 - GetFontStringWidth("Start game!") / 2
@@ -33,7 +33,7 @@ function titlescreen:draw()
     love.graphics.rectangle('fill', 0, 0, windowWidth, windowHeight)
   love.graphics.setColor(1, 1, 1)
 
-  love.graphics.draw(self.logo, self.buttonX - self.logo:getWidth() * (scale / 4), windowHeight / 12, nil, scale)
+  love.graphics.draw(self.logo, windowWidth / 2 - self.logo:getWidth() * (scale / 2), windowHeight / 12, nil, scale)
 
   self.animation:draw(player.spritesheet, self.buttonX - player.width * (scale*5), self.buttonY + self:buttonTween(self.selectedButton, 0) - (player.height * (scale/4)), nil, scale)
 

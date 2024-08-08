@@ -1,2 +1,3 @@
-#Cavestory
+# Cavestory
+
 This is a remake of the indie hit Cavestory, made in Love2d...

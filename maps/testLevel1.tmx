@@ -187,8 +187,8 @@
  <objectgroup id="8" name="warp">
   <object id="211" name="testLevel2" type="door" x="482" y="218" width="12" height="21">
    <properties>
-    <property name="destX" type="int" value="408"/>
-    <property name="destY" type="int" value="298"/>
+    <property name="destX" type="int" value="407"/>
+    <property name="destY" type="int" value="297"/>
    </properties>
   </object>
  </objectgroup>
