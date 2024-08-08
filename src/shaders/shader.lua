@@ -24,7 +24,7 @@ function shaders:update()
     shaders.lightFlicker = 0.4525
   end
 
-  shaders.trueLight:send("playerX", lightX) --
+  shaders.trueLight:send("playerX", lightX)
   shaders.trueLight:send("playerY", lightY)
 
   shaders.trueLight:send("shaderTween", shaders.lightFlicker)
