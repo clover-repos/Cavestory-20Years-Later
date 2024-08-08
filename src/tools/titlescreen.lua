@@ -43,10 +43,9 @@ function titlescreen:draw()
 end
 
 function titlescreen:startGame()
-  level.circleSize = level.circleMaxSize
-  level:warp("testLevel1")
+  --level.circleSize = level.circleMaxSize
+  level:warp("testLevel1", nil, nil, true)
 
-  gamestate = playstate
   self.song:stop()
 
   levelsong = love.audio.newSource('music/Gestation.ogg', 'stream')

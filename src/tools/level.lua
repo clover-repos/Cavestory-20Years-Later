@@ -7,12 +7,12 @@ level.circleSize = 0
 level.circleGrowth = 2000
 level.transition = 'idle'
 
-level.circleColor = {0.125, 0.125, 0.125}
+level.circleColor = {0.05, 0.05, 0.2}
 
-function level:warp(mapName, destX, destY)
+function level:warp(mapName, destX, destY, middle)
   self.transition = 'open'
 
-  self.warpDest, self.destX, self.destY = mapName, destX, destY
+  self.warpDest, self.destX, self.destY, self.middle = mapName, destX, destY, middle
 end
 
 function level:load(mapName, destX, destY)
@@ -26,6 +26,8 @@ function level:load(mapName, destX, destY)
 
   if self.notFirst then
     self:removeColliders()
+
+    gamestate = playstate
   else
     self.notFirst = true
   end
@@ -51,7 +53,12 @@ function level:update()
   local largeD
   local largeP
 
-  self.x, self.y = player:getPositionOnScreen()
+  if self.middle then
+    self.x = windowWidth / 2
+    self.y = windowHeight / 2
+  else
+    self.x, self.y = player:getPositionOnScreen()
+  end
 
   if windowWidth >= windowHeight then
     largeD = windowWidth
@@ -85,9 +92,7 @@ function level:update()
     if self.circleSize <= 0 then
       self.transition = 'idle'
 
-      if level.circleColor[1] ~= 0.5 then
-        level.circleColor = {0.05, 0.05, 0.2}
-      end
+      self.middle = nil
     end
   end
 end

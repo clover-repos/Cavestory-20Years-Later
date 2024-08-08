@@ -66,13 +66,13 @@ function love.draw()
 
     camera:detach() --Stops drawing from the camera's pov
 
-    if level.transition ~= 'idle' then
-      love.graphics.setColor(level.circleColor)
-        love.graphics.circle('fill', level.x, level.y, level.circleSize)
-      love.graphics.setColor(1, 1, 1)
-    end
-
   elseif gamestate == titlestate then
     titlescreen:draw() --Draws titlescreen effects
+  end
+
+  if level.transition ~= 'idle' then
+    love.graphics.setColor(level.circleColor)
+      love.graphics.circle('fill', level.x, level.y, level.circleSize)
+    love.graphics.setColor(1, 1, 1)
   end
 end
