@@ -189,7 +189,7 @@
   </object>
  </objectgroup>
  <objectgroup id="8" name="warp">
-  <object id="211" name="testLevel2" type="door" x="482" y="219" width="12" height="21">
+  <object id="211" name="testLevel2" type="door" x="479" y="234" width="20" height="6">
    <properties>
     <property name="destX" type="int" value="407"/>
     <property name="destY" type="int" value="297"/>
