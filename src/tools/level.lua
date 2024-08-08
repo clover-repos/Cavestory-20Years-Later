@@ -79,6 +79,8 @@ function level:update()
     if self.circleSize >= self.circleMaxSize then
       self.transition = 'close'
 
+      self.middle = nil
+
       self:load(self.warpDest, self.destX, self.destY)
       self.warpDest, self.destX, self.destY = nil, nil, nil
 
@@ -91,8 +93,6 @@ function level:update()
 
     if self.circleSize <= 0 then
       self.transition = 'idle'
-
-      self.middle = nil
     end
   end
 end
