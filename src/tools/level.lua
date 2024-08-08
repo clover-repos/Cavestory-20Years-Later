@@ -7,6 +7,8 @@ level.circleSize = 0
 level.circleGrowth = 2000
 level.transition = 'idle'
 
+level.circleColor = {0.125, 0.125, 0.125}
+
 function level:warp(mapName, destX, destY)
   self.transition = 'open'
 
@@ -82,6 +84,10 @@ function level:update()
 
     if self.circleSize <= 0 then
       self.transition = 'idle'
+
+      if level.circleColor[1] ~= 0.5 then
+        level.circleColor = {0.05, 0.05, 0.2}
+      end
     end
   end
 end

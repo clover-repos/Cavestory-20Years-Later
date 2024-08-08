@@ -67,7 +67,7 @@ function love.draw()
     camera:detach() --Stops drawing from the camera's pov
 
     if level.transition ~= 'idle' then
-      love.graphics.setColor(0.05, 0.05, 0.2)
+      love.graphics.setColor(level.circleColor)
         love.graphics.circle('fill', level.x, level.y, level.circleSize)
       love.graphics.setColor(1, 1, 1)
     end
