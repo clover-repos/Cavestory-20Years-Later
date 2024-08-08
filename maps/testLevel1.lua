@@ -10,7 +10,7 @@ return {
   tilewidth = 16,
   tileheight = 16,
   nextlayerid = 10,
-  nextobjectid = 217,
+  nextobjectid = 219,
   properties = {
     ["background"] = "background2"
   },
@@ -299,7 +299,7 @@ return {
           shape = "rectangle",
           x = 453,
           y = 239,
-          width = 44,
+          width = 28,
           height = 1,
           rotation = 0,
           visible = true,
@@ -649,6 +649,40 @@ return {
           rotation = 0,
           visible = true,
           properties = {}
+        },
+        {
+          id = 217,
+          name = "",
+          type = "",
+          shape = "rectangle",
+          x = 494,
+          y = 239,
+          width = 3,
+          height = 1,
+          rotation = 0,
+          visible = true,
+          properties = {}
+        },
+        {
+          id = 218,
+          name = "",
+          type = "",
+          shape = "polygon",
+          x = 494,
+          y = 239,
+          width = 0,
+          height = 0,
+          rotation = 0,
+          visible = true,
+          polygon = {
+            { x = 0, y = 0 },
+            { x = -1, y = 1 },
+            { x = -12, y = 1 },
+            { x = -13, y = 0 },
+            { x = -13, y = 2 },
+            { x = 0, y = 2 }
+          },
+          properties = {}
         }
       }
     },
@@ -672,7 +706,7 @@ return {
           type = "door",
           shape = "rectangle",
           x = 482,
-          y = 218,
+          y = 219,
           width = 12,
           height = 21,
           rotation = 0,

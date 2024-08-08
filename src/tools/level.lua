@@ -46,7 +46,6 @@ end
 function level:update()
   gameLevel:update(publicDT) --Tiles have animation
 
-
   local largeD
   local largeP
 
