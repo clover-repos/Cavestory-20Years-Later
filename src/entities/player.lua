@@ -62,7 +62,7 @@ function player:hitWarp()
   return querys
 end
 
-function player:getPositionOnScreen() --Once again this code here is from Kyle's Legend-of-lua repo, located in the shader file
+function player:getPositionOnScreen()
   local px, py = player:getPosition()
 
   local mapW = (gameLevel.width * gameLevel.tilewidth)-- * scale
@@ -94,7 +94,89 @@ function player:getPositionOnScreen() --Once again this code here is from Kyle's
   return x, y
 end
 
-function player:handleJump()
+function player:update()
+  player:controls()
+
+  self.isMoving = false
+
+  if self.xV ~= 0 then
+    self.isMoving = true
+  end
+
+  if self.currentAnimation == self.animations.right.look and self.isMoving == true then
+    self.currentAnimation = self.animations.right.walk
+  elseif self.currentAnimation == self.animations.left.look and self.isMoving == true then
+    self.currentAnimation = self.animations.left.walk
+  end
+
+  if self.isMoving == true then
+    if self.dir == 'left' then
+      self.xV = -self.speed
+    else
+      self.xV = self.speed
+    end
+  end
+
+  if self:enter('water') then
+    self.speed = 25
+    self.gravity = gravity / 3
+    self.animationSpeed = 1.75
+    self.yV = self.gravity
+    self.jumpSpeed = 450 / 6
+  end
+
+  if self:exit('water') then
+    self.speed = 75
+    self.gravity = gravity
+    self.animationSpeed = 1
+    self.jumpSpeed = 450 / 4
+    if not self:OnGround() then
+      self.yV = -self.jumpSpeed
+    else
+      self.yV = self.gravity
+    end
+  end
+
+  if self:OnGround() then
+    if self.isMoving == true then
+      self.yFactor = self.gravity / 1.75
+    else
+      self.yFactor = self.gravity
+    end
+  else
+    self.yFactor = 0
+  end
+
+  player:setPreSolve(function(c1, c2, coll)
+    if c1.collision_class == 'player' and c2.collision_class == 'platform' then
+      if c2.name == 'oneway' then
+        if c1:getY() + c1.height / 4 > c2:getY() - c2.height / 2 then
+          coll:setEnabled(false)
+        end
+      end
+    elseif c1.collision_class == 'player' and c2.collision_class == 'warp' then
+      if c2.class == 'door' then
+        coll:setEnabled(false)
+      end
+    end
+  end)
+
+  self:jumpLogic()
+
+  if #self:hitWarp() > 0 then
+    local warp = self:hitWarp()[1]
+
+    if warp.class ~= 'door' then
+      level:warp(warp.name, warp.properties.destX, warp.properties.destY)
+    end
+  end
+
+  if not self:OnGround() then
+    self.isAirborn = true
+  end
+end
+
+function player:jumpLogic()
   if self.jumpTimer then
     self.jumpTimer = self.jumpTimer - publicDT
     self.jumpFrame = 4
@@ -102,6 +184,7 @@ function player:handleJump()
 
     if self.jumpTimer <= 0 or self:HitCeiling() then
       self.yV = self.yV + (2050 / 4) * publicDT
+
       if self.yV >= self.gravity then
         self.jumpTimer = nil
         self.isJumping = false
@@ -110,108 +193,40 @@ function player:handleJump()
       end
     end
   end
-end
 
-function player:updateVelocity()
   self:setLinearVelocity(self.xV, self.yV - self.yFactor)
-end
-
-function player:updateAnimation()
   self.currentAnimation:update(publicDT / self.animationSpeed)
 
   if not self:OnGround() then
     self.jumpFrame = self.jumpFrame or 2
-    if self.currentAnimation == self.animations.right.look or self.currentAnimation == self.animations.left.look then
+
+    if self.currentAnimation == self.animations.right.look then
+      self.jumpFrame = 1
+    elseif self.currentAnimation == self.animations.left.look then
       self.jumpFrame = 1
     end
+
     self.currentAnimation:gotoFrame(self.jumpFrame)
-  elseif not self.isMoving and self:OnGround() then
+  end
+
+  if self.isMoving == false and self:OnGround() then
     if self.currentAnimation == self.animations.right.walk or self.currentAnimation == self.animations.left.walk then
       self.currentAnimation:gotoFrame(1)
-    elseif self.currentAnimation == self.animations.right.look or self.currentAnimation == self.animations.left.look then
+    end
+
+    if self.currentAnimation == self.animations.right.look or self.currentAnimation == self.animations.left.look then
       self.currentAnimation:gotoFrame(2)
+
       if self.isAirborn then
-        self.currentAnimation = (self.dir == 'left') and self.animations.left.walk or self.animations.right.walk
+        if self.dir == 'left' then
+          self.currentAnimation = self.animations.left.walk
+        else
+          self.currentAnimation = self.animations.right.walk
+        end
+
         self.isAirborn = nil
       end
     end
-  end
-end
-
-function player:handleCollision(c1, c2, coll)
-  if c1.collision_class == 'player' and c2.collision_class == 'platform' then
-    if c2.name == 'oneway' and (c1:getY() + c1.height / 4 > c2:getY() - c2.height / 2) then
-      coll:setEnabled(false)
-    end
-  elseif c1.collision_class == 'player' and c2.collision_class == 'warp' and c2.class == 'door' then
-    coll:setEnabled(false)
-  end
-end
-
-function player:handleWaterState()
-  if self:enter('water') then
-    self.speed = 25
-    self.gravity = gravity / 3
-    self.animationSpeed = 1.75
-    self.yV = self.gravity
-    self.jumpSpeed = 450 / 6
-  elseif self:exit('water') then
-    self.speed = 75
-    self.gravity = gravity
-    self.animationSpeed = 1
-    self.jumpSpeed = 450 / 4
-    self.yV = self:OnGround() and self.gravity or -self.jumpSpeed
-  end
-end
-
-function player:handleWarp()
-  local warps = self:hitWarp()
-
-  if #warps > 0 then
-    local warp = warps[1]
-
-    if warp.class ~= 'door' then
-      level:warp(warp.name, warp.properties.destX, warp.properties.destY)
-    end
-  end
-end
-
-function player:update()
-  player:controls()
-
-  self.isMoving = self.xV ~= 0
-
-  if self.isMoving then
-    if self.currentAnimation == self.animations.right.look then
-      self.currentAnimation = self.animations.right.walk
-    elseif self.currentAnimation == self.animations.left.look then
-      self.currentAnimation = self.animations.left.walk
-    end
-  end
-
-  if self.isMoving then
-    self.xV = (self.dir == 'left') and -self.speed or self.speed
-  end
-
-  self:handleWaterState()
-
-  if self:OnGround() then
-    self.yFactor = self.isMoving and (self.gravity / 1.75) or self.gravity
-  else
-    self.yFactor = 0
-  end
-
-  player:setPreSolve(self.handleCollision)
-
-  self:handleJump()
-
-  self:updateVelocity()
-  self:updateAnimation()
-
-  self:handleWarp()
-
-  if not self:OnGround() then
-    self.isAirborn = true
   end
 end
 
