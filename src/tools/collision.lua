@@ -43,6 +43,8 @@ function loadMapColliders(layer, tablename, class, width, height)
 
       if obj.shape ~= "polygon" then
         collider = world:newBSGRectangleCollider(obj.x, obj.y, obj.width, obj.height, 0.25)
+
+        collider.height = obj.height
       else
 
         local dVertices = {}

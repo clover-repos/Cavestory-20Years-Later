@@ -147,13 +147,25 @@ function player:update()
     self.yFactor = 0
   end
 
-  player:setPreSolve(function(c1, c2, coll)
-    if c1.collision_class == 'player' and c2.collision_class == 'warp' then
+
+  player:setPreSolve(
+
+  function(c1, c2, coll)
+    if c1.collision_class == 'player' and c2.collision_class == 'platform' then
+      if c2.name == 'oneway' then
+        if c1:getY() + c1.height / 4 > c2:getY() - c2.height / 2 then
+          coll:setEnabled(false)
+        end
+      end
+    elseif c1.collision_class == 'player' and c2.collision_class == 'warp' then
       if c2.class == 'door' then
         coll:setEnabled(false)
       end
     end
-  end)
+  end
+
+  )
+
 
   if self.jumpTimer then
     self.jumpTimer = self.jumpTimer - publicDT

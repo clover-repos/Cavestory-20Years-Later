@@ -10,7 +10,7 @@ return {
   tilewidth = 16,
   tileheight = 16,
   nextlayerid = 8,
-  nextobjectid = 33,
+  nextobjectid = 35,
   properties = {
     ["background"] = "background2"
   },
@@ -505,6 +505,19 @@ return {
             { x = 18, y = 3 },
             { x = 0, y = 3 }
           },
+          properties = {}
+        },
+        {
+          id = 33,
+          name = "oneway",
+          type = "",
+          shape = "rectangle",
+          x = 384,
+          y = 272,
+          width = 48,
+          height = 1,
+          rotation = 0,
+          visible = true,
           properties = {}
         }
       }
