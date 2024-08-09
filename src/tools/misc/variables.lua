@@ -39,10 +39,10 @@ function variables:update()
   scale = scale * (windowHeight / preferedScreenHeight)
 
   scaleRaw = scale
-
   scale = math.round(scale)
+
   if scale <= 1 then
-    scale = 1.001
+    scale = 1 --Can't be zero...
   end
 
   fontMain = love.graphics.newFont('fonts/CaveStory.ttf', 15 * scale) --Updates font scale
