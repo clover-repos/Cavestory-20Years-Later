@@ -3,7 +3,7 @@
 
 local width, height = 4, 16
 
-local player = world:newBSGRectangleCollider(30, 240 - height, width, height, 0.25)
+local player = world:newBSGRectangleCollider(30, 240 - height, width, height, 0.05)
 
 function player:load()
   self:setFixedRotation(true)
