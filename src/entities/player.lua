@@ -3,7 +3,7 @@
 
 local width, height = 4, 16
 
-local player = world:newBSGRectangleCollider(30, 240 - height, width, height, 0.05)
+local player = world:newBSGRectangleCollider(30, 288 - height, width, height, 0.15)
 
 function player:load()
   self:setFixedRotation(true)
@@ -97,6 +97,8 @@ end
 function player:update()
   player:controls()
 
+  local xV, yV = self:getLinearVelocity()
+
   self.isMoving = false
 
   if self.xV ~= 0 then
@@ -150,7 +152,7 @@ function player:update()
   player:setPreSolve(function(c1, c2, coll)
     if c1.collision_class == 'player' and c2.collision_class == 'platform' then
       if c2.name == 'oneway' then
-        if c1:getY() + c1.height / 4 > c2:getY() - c2.height / 2 then
+        if c1:getY() + c1.height / 2 > c2:getY() - c2.height / 2 then
           coll:setEnabled(false)
         end
       end
@@ -280,7 +282,7 @@ function player:released()
   end
 
   if inputs:released 'jump' then
-    self.jumpTimer = 0
+    self.jumpTimer = 0.05
   end
 end
 

@@ -544,7 +544,7 @@ return {
           x = 402,
           y = 282,
           width = 12,
-          height = 21,
+          height = 22,
           rotation = 0,
           visible = true,
           properties = {
