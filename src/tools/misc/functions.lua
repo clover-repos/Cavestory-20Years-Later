@@ -19,7 +19,7 @@ function toggleFullscreen()
   end
 end
 
---Lua's math library does not round built in
+--Lua"s math library does not round built in
 function math.round(number)
     if number >= 0 then
         return math.floor(number + 0.5)

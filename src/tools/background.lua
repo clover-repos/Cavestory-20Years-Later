@@ -5,7 +5,7 @@ background = {}
 
 function background:load(backgroundFile)
   if backgroundFile then
-    self.image = love.graphics.newImage('tilesets/backgrounds/'.. backgroundFile .. '.png')
+    self.image = love.graphics.newImage("tilesets/backgrounds/".. backgroundFile .. ".png")
     return
   end
 

@@ -5,9 +5,9 @@ entities = {}
 
 function entities:load()
   --Require section
-  player = require('src/entities/player')
+  player = require("src/entities/player")
 
-  require('src/entities/enemy')
+  require("src/entities/enemy")
 
   --Load section
   player:load()

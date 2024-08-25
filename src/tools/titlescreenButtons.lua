@@ -21,17 +21,17 @@ titlescreen.buttons = {
     text = "Settings.",
 
     call = function()
-      if titlescreen.buttons[1].text ~= 'Keybinding.' then
-        titlescreen.buttons[1].text = 'Keybinding.'
-        titlescreen.buttons[2].text = 'Save files.'
-        titlescreen.buttons[3].text = '[X]  Go back...'
+      if titlescreen.buttons[1].text ~= "Keybinding." then
+        titlescreen.buttons[1].text = "Keybinding."
+        titlescreen.buttons[2].text = "Save files."
+        titlescreen.buttons[3].text = "[X]  Go back..."
 
         titlescreen.buttons[1].call = function()end
         titlescreen.buttons[2].call = function()end
       else
-        titlescreen.buttons[1].text = 'Start game!'
-        titlescreen.buttons[2].text = 'Exit...'
-        titlescreen.buttons[3].text = 'Settings.'
+        titlescreen.buttons[1].text = "Start game!"
+        titlescreen.buttons[2].text = "Exit..."
+        titlescreen.buttons[3].text = "Settings."
 
         titlescreen.buttons[1].call = function() titlescreen:startGame() end
         titlescreen.buttons[2].call = function() love.event.quit() end

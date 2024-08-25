@@ -1,4 +1,4 @@
-// Circle cutout shader with some cool 'blending'
+// Circle cutout shader with some cool "blending"
 
 uniform float playerX;
 uniform float playerY;

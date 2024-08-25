@@ -3,7 +3,7 @@
 titlescreen = {} --Za magik table
 
 function titlescreen:load()
-  self.song = love.audio.newSource('music/TitleTheme.ogg', 'stream')
+  self.song = love.audio.newSource("music/TitleTheme.ogg", "stream")
   self.song:setLooping(true)
 
   self.song:play()
@@ -11,9 +11,9 @@ function titlescreen:load()
 
   self.animation = player.animations.right.walk:clone()
 
-  self.logo = love.graphics.newImage('sprites/ui/cavestory.png')
+  self.logo = love.graphics.newImage("sprites/ui/cavestory.png")
 
-  require 'src/tools/titlescreenButtons' --Less clutter for making buttons
+  require "src/tools/titlescreenButtons" --Less clutter for making buttons
 end
 
 function titlescreen:update()
@@ -30,7 +30,7 @@ end
 
 function titlescreen:draw()
   love.graphics.setColor(0.125, 0.125, 0.125)
-    love.graphics.rectangle('fill', 0, 0, windowWidth, windowHeight)
+    love.graphics.rectangle("fill", 0, 0, windowWidth, windowHeight)
   love.graphics.setColor(1, 1, 1)
 
   love.graphics.draw(self.logo, windowWidth / 2 - self.logo:getWidth() * (scale / 2), windowHeight / 12, nil, scale)
@@ -48,20 +48,20 @@ function titlescreen:startGame()
 
   self.song:stop()
 
-  levelsong = love.audio.newSource('music/Gestation.ogg', 'stream')
+  levelsong = love.audio.newSource("music/Gestation.ogg", "stream")
   levelsong:setLooping(true)
 
   levelsong:play()
 end
 
 function titlescreen:pressed()
-  if inputs:pressed 'action' then
+  if inputs:pressed "action" then
     self.buttons[self.selectedButton]:call()
   end
 
-  if inputs:down 'up' then
+  if inputs:down "up" then
     self.buttons.Up()
-  elseif inputs:down 'down' then
+  elseif inputs:down "down" then
     self.buttons.Down()
   end
 end

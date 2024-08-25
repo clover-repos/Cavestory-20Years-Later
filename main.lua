@@ -4,7 +4,7 @@ function love.load()
   math.randomseed(os.time()) --Random number
   love.graphics.setDefaultFilter("nearest", "nearest") --Pixel art scales with no blur
 
-  require('src/tools/startup') --Imports startup file with code imports for less clutter
+  require("src/tools/startup") --Imports startup file with code imports for less clutter
 end
 
 function love.update(dt)
@@ -20,7 +20,7 @@ function love.update(dt)
 
   inputs:update() --Baton input update functions
 
-  if inputs:pressed 'fullscreen' then
+  if inputs:pressed "fullscreen" then
     toggleFullscreen() --If f11 was pressed fullscreen will be toggled
   end
 
@@ -32,7 +32,7 @@ function love.update(dt)
   shaders:update(publicDT) --Updates shaders position
 
   if gamestate == playstate then
-    if level.transition == 'idle' then
+    if level.transition == "idle" then
       world:update(publicDT) --Updates colliders for the current frame
     end
 
@@ -45,34 +45,34 @@ function love.update(dt)
 end
 
 function love.draw()
-  love.graphics.setFont(fontMain) --Set's the font
+  love.graphics.setFont(fontMain) --Set"s the font
 
   if gamestate == playstate then
     background:draw()
 
-    camera:attach() --Draws from camera's pov
+    camera:attach() --Draws from camera"s pov
 
-      gameLevel:drawLayer(gameLevel.layers['background']) --Map layer gets drawn
+      gameLevel:drawLayer(gameLevel.layers["background"]) --Map layer gets drawn
 
       entities:draw() --All entities get drawn here
 
 
-      gameLevel:drawLayer(gameLevel.layers['forgeground']) --Map layer gets drawn
-      gameLevel:drawLayer(gameLevel.layers['forgeground2']) --Map layer gets drawn
+      gameLevel:drawLayer(gameLevel.layers["forgeground"]) --Map layer gets drawn
+      gameLevel:drawLayer(gameLevel.layers["forgeground2"]) --Map layer gets drawn
 
       shaders:draw() --Shader effects
 
       --debugDraw() --Draw debug colliders and hitboxes
 
-    camera:detach() --Stops drawing from the camera's pov
+    camera:detach() --Stops drawing from the camera"s pov
 
   elseif gamestate == titlestate then
     titlescreen:draw() --Draws titlescreen effects
   end
 
-  if level.transition ~= 'idle' then
+  if level.transition ~= "idle" then
     love.graphics.setColor(level.circleColor)
-      love.graphics.circle('fill', level.x, level.y, level.circleSize)
+      love.graphics.circle("fill", level.x, level.y, level.circleSize)
     love.graphics.setColor(1, 1, 1)
   end
 end

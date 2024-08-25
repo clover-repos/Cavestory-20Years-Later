@@ -24,7 +24,7 @@ function normalize(x, y)
 end
 
 function loadMapColliders(layer, tablename, class, width, height)
-  if type(tablename) ~= 'table' then
+  if type(tablename) ~= "table" then
     error("Make sure you pass in a table for your second argument.")
   end
 
@@ -61,7 +61,7 @@ function loadMapColliders(layer, tablename, class, width, height)
         collider:setCollisionClass(class)
       end
 
-      collider:setType('static')
+      collider:setType("static")
 
       collider.name = obj.name
       collider.properties = obj.properties

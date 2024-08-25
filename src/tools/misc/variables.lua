@@ -13,11 +13,11 @@ function variables:load()
 
   gamestate = titlestate
 
-  fontMain = love.graphics.newFont('fonts/CaveStory.ttf', 15 * scale)
+  fontMain = love.graphics.newFont("fonts/CaveStory.ttf", 15 * scale)
 
   function GetFontHeight(font, string)
     font = font or fontMain
-    string = string or ' '
+    string = string or " "
 
     return font:getHeight(string)
   end
@@ -42,8 +42,8 @@ function variables:update()
   scale = math.round(scale)
 
   if scale <= 1 then
-    scale = 1 --Can't be zero...
+    scale = 1 --Can"t be zero...
   end
 
-  fontMain = love.graphics.newFont('fonts/CaveStory.ttf', 15 * scale) --Updates font scale
+  fontMain = love.graphics.newFont("fonts/CaveStory.ttf", 15 * scale) --Updates font scale
 end

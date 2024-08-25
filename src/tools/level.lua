@@ -1,16 +1,16 @@
---Functions for level's in the game
+--Functions for level"s in the game
 
 
 level = {}
 
 level.circleSize = 0
 level.circleGrowth = 2000
-level.transition = 'idle'
+level.transition = "idle"
 
 level.circleColor = {0.05, 0.05, 0.2}
 
 function level:warp(mapName, destX, destY, middle)
-  self.transition = 'open'
+  self.transition = "open"
 
   self.warpDest, self.destX, self.destY, self.middle = mapName, destX, destY, middle
 end
@@ -38,9 +38,9 @@ function level:load(mapName, destX, destY)
 
   gameLevel = sti("maps/" .. mapName .. ".lua")
 
-  loadMapColliders('ground', platforms, 'platform')
-  loadMapColliders('environment', water, 'water')
-  loadMapColliders('warp', warps, 'warp')
+  loadMapColliders("ground", platforms, "platform")
+  loadMapColliders("environment", water, "water")
+  loadMapColliders("warp", warps, "warp")
 
   enemies:spawn()
 
@@ -73,11 +73,11 @@ function level:update()
   self.circleMaxSize = largeD * 1.15
 
 
-  if self.transition == 'open' then
+  if self.transition == "open" then
     self.circleSize = self.circleSize + self.circleGrowth * publicDT
 
     if self.circleSize >= self.circleMaxSize then
-      self.transition = 'close'
+      self.transition = "close"
 
       self:load(self.warpDest, self.destX, self.destY)
       self.warpDest, self.destX, self.destY = nil, nil, nil
@@ -86,11 +86,11 @@ function level:update()
     end
   end
 
-  if self.transition == 'close' then
+  if self.transition == "close" then
     self.circleSize = self.circleSize - self.circleGrowth * publicDT
 
     if self.circleSize <= 0 then
-      self.transition = 'idle'
+      self.transition = "idle"
       self.middle = nil
     end
   end
