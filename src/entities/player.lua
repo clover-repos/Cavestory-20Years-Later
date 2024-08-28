@@ -3,42 +3,49 @@
 
 local width, height = 4, 16
 
-local player = world:newBSGRectangleCollider(30, 288 - height, width, height, 0.15)
+local player = world:newBSGRectangleCollider(30, 188 - height, width, height, 0)
 
 function player:load()
   self:setFixedRotation(true)
   self:setCollisionClass("player")
 
   self.width, self.height = width, height
+
+  self.xV, self.yV = 0, 0
+
+  self.speed = 65
   self.gravity = gravity
 
-  self.jumpSpeed = 112
-  self.speed = 75
-  self.jumpTime = 0.4
-  self.yFactor = 0
-  self.isMoving = false
+  self.acceleration = 2000
+  self.friction = 200
 
-  self.xV, self.yV = 0, self.gravity
+  self.isMoving = nil
+
+  self.jumpTimer = 0
+
+  --
 
   self.spritesheet = love.graphics.newImage("sprites/entities/player.png")
   self.animationCell = anim8.newGrid(16, 16, self.spritesheet:getWidth(), self.spritesheet:getHeight())
 
   self.animations = {}
 
-  self.animations.left = {}
-  self.animations.right = {}
+  self.animations.walk = anim8.newAnimation(self.animationCell("1-4", 1), 0.1625)
+  self.animations.look = anim8.newAnimation(self.animationCell("8-9", 1), 0.1)
 
-  self.animations.left.walk = anim8.newAnimation(self.animationCell("1-4", 1), 0.1625)
-  self.animations.right.walk = anim8.newAnimation(self.animationCell("1-4", 2), 0.1625)
-
-  self.animations.right.look = anim8.newAnimation(self.animationCell("8-9", 2), 0.1)
-  self.animations.left.look = anim8.newAnimation(self.animationCell("8-9", 1), 0.1)
-
-  self.currentAnimation = self.animations.right.walk
+  self.currentAnimation = self.animations.walk
   self.dir = "right"
-  self.animationSpeed = 1
-  self.isJumping = false
+
+  self.stopFrame = 1
+
+  --
+
+  self.sounds = {}
+  self.sounds.walk = love.audio.newSource("sounds/player/walk.ogg", "static")
+
+  self.walkSoundTimer = 0.2
 end
+
 
 function player:OnGround()
   local querys = world:queryRectangleArea(self:getX() - self.width / 2 + 0.25, self:getY() + self.height / 2 - 1.25, self.width - 0.5, 3, {"platform", "enemy"})
@@ -61,6 +68,7 @@ function player:hitWarp()
 
   return querys
 end
+
 
 function player:getPositionOnScreen()
   local px, py = player:getPosition()
@@ -94,207 +102,120 @@ function player:getPositionOnScreen()
   return x, y
 end
 
-function player:update()
-  player:controls()
 
-  local xV, yV = self:getLinearVelocity()
+function player:update(dt)
+  self:pressed()
+  self:released()
 
-  self.isMoving = false
+  self:setLinearVelocity(self.xV, self.yV)
+  self:physics(dt)
+  self:applyGravity(dt)
+
+  self.isMoving = nil
 
   if self.xV ~= 0 then
     self.isMoving = true
   end
 
-  if self.currentAnimation == self.animations.right.look and self.isMoving == true then
-    self.currentAnimation = self.animations.right.walk
-  elseif self.currentAnimation == self.animations.left.look and self.isMoving == true then
-    self.currentAnimation = self.animations.left.walk
-  end
+  if self.isMoving then
+    self.currentAnimation:update(dt)
 
-  if self.isMoving == true then
-    if self.dir == "left" then
-      self.xV = -self.speed
-    else
-      self.xV = self.speed
-    end
-  end
+    if self:OnGround() then
+      self.walkSoundTimer = self.walkSoundTimer - dt
 
-  if self:enter("water") then
-    self.speed = 25
-    self.gravity = gravity / 3
-    self.animationSpeed = 1.75
-    self.yV = self.gravity
-    self.jumpSpeed = 450 / 6
-  end
-
-  if self:exit("water") then
-    self.speed = 75
-    self.gravity = gravity
-    self.animationSpeed = 1
-    self.jumpSpeed = 450 / 4
-    if not self:OnGround() then
-      self.yV = -self.jumpSpeed
-    else
-      self.yV = self.gravity
-    end
-  end
-
-  if self:OnGround() then
-    if self.isMoving == true then
-      self.yFactor = self.gravity / 1.75
-    else
-      self.yFactor = self.gravity
+      if self.walkSoundTimer <= 0 then
+        self.sounds.walk:play()
+        self.walkSoundTimer = 0.25
+      end
     end
   else
-    self.yFactor = 0
-  end
+    self.currentAnimation:gotoFrame(self.stopFrame)
 
-  player:setPreSolve(function(c1, c2, coll)
-    if c1.collision_class == "player" and c2.collision_class == "platform" then
-      if c2.name == "oneway" then
-        if c1:getY() + c1.height / 2 > c2:getY() - c2.height / 2 then
-          coll:setEnabled(false)
-        end
-      end
-    elseif c1.collision_class == "player" and c2.collision_class == "warp" then
-      if c2.class == "door" then
-        coll:setEnabled(false)
-      end
-    end
-  end)
-
-  self:jumpLogic()
-
-  if #self:hitWarp() > 0 then
-    local warp = self:hitWarp()[1]
-
-    if warp.class ~= "door" then
-      level:warp(warp.name, warp.properties.destX, warp.properties.destY)
+    if self.sounds.walk:isPlaying() then
+      self.sounds.walk:stop()
     end
   end
 
-  if not self:OnGround() then
-    self.isAirborn = true
-  end
-end
-
-function player:jumpLogic()
-  if self.jumpTimer then
-    self.jumpTimer = self.jumpTimer - publicDT
-    self.jumpFrame = 4
-    self.isJumping = true
-
-    if self.jumpTimer <= 0 or self:HitCeiling() then
-      self.yV = self.yV + (2050 / 4) * publicDT
-
-      if self.yV >= self.gravity then
-        self.jumpTimer = nil
-        self.isJumping = false
-        self.jumpFrame = 2
-        self.yV = self.gravity
-      end
-    end
-  end
-
-  self:setLinearVelocity(self.xV, self.yV - self.yFactor)
-  self.currentAnimation:update(publicDT / self.animationSpeed)
-
-  if not self:OnGround() then
-    self.jumpFrame = self.jumpFrame or 2
-
-    if self.currentAnimation == self.animations.right.look then
-      self.jumpFrame = 1
-    elseif self.currentAnimation == self.animations.left.look then
-      self.jumpFrame = 1
-    end
-
-    self.currentAnimation:gotoFrame(self.jumpFrame)
-  end
-
-  if self.isMoving == false and self:OnGround() then
-    if self.currentAnimation == self.animations.right.walk or self.currentAnimation == self.animations.left.walk then
-      self.currentAnimation:gotoFrame(1)
-    end
-
-    if self.currentAnimation == self.animations.right.look or self.currentAnimation == self.animations.left.look then
-      self.currentAnimation:gotoFrame(2)
-
-      if self.isAirborn then
-        if self.dir == "left" then
-          self.currentAnimation = self.animations.left.walk
-        else
-          self.currentAnimation = self.animations.right.walk
-        end
-
-        self.isAirborn = nil
-      end
-    end
-  end
+  player:jump(dt)
 end
 
 function player:draw()
-  self.currentAnimation:draw(self.spritesheet, self:getX() - 8, self:getY() - self.height / 2)
+  if self.dir == "right" then
+    self.currentAnimation:draw(self.spritesheet, self:getX() - 8, self:getY() - self.height / 2)
+  else
+    self.currentAnimation:draw(self.spritesheet, self:getX() + 8, self:getY() - self.height / 2, nil, -1, 1)
+  end
+end
+
+function player:physics(dt)
+  if self.dir == "right" then
+    if inputs:down "right" then
+      if self.xV < self.speed then
+        self.xV = self.xV + self.acceleration * dt
+
+        if self.xV > self.speed then
+          self.xV = self.speed
+        end
+      end
+    end
+  else
+    if inputs:down "left" then
+      if self.xV > -self.speed then
+        self.xV = self.xV - self.acceleration * dt
+
+        if self.xV < -self.speed then
+          self.xV = -self.speed
+        end
+      end
+    end
+  end
+
+  if not inputs:down "right" and not inputs:down "left" then
+    if self.xV < 0 then
+      self.xV = self.xV + self.friction * dt
+
+      if self.xV > 0 then self.xV = 0 end
+    elseif self.xV > 0 then
+      self.xV = self.xV - self.friction * dt
+
+      if self.xV < 0 then self.xV = 0 end
+    end
+  end
+end
+
+function player:jump(dt)
+  if inputs:down "jump" and self:OnGround() then
+    self.yV = -100
+  end
+end
+
+function player:applyGravity(dt)
+  self.yV = self.yV + self.gravity * dt
+
+  if self.yV > self.gravity then self.yV = self.gravity end
+
+  if self:OnGround() then
+    self.yV = 36
+    if not self.isMoving then self.yV = 0 end
+  end
 end
 
 function player:pressed()
-  if inputs:pressed "jump" and self:OnGround() then
-    self:jump()
-  end
-
-  if inputs:pressed "left" then
-    self.xV = -self.speed
-
-    self.currentAnimation = self.animations.left.walk
-    self.dir = "left"
-  end
-
   if inputs:pressed "right" then
-    self.xV = self.speed
-
-    self.currentAnimation = self.animations.right.walk
     self.dir = "right"
-  end
-
-  if inputs:pressed "down" then
-    if self.dir == "left" then
-      self.currentAnimation = self.animations.left.look
-    else
-      self.currentAnimation = self.animations.right.look
-    end
-
-    if #self:hitWarp() > 0 then
-      local warp = self:hitWarp()[1]
-
-      if warp.class == "door" and self.isMoving == false and self:OnGround() then
-        level:warp(warp.name, warp.properties.destX, warp.properties.destY)
-      end
-    else
-      -- ?
-    end
+  elseif inputs:pressed "left" then
+    self.dir = "left"
+  elseif inputs:pressed "down" then
+    self.currentAnimation = self.animations.look
+    self.stopFrame = 2
   end
 end
 
 function player:released()
-  if inputs:released "left" and not inputs:down "right" then
-    self.xV = 0
-  elseif inputs:released "right" and not inputs:down "left" then
-    self.xV = 0
+  if self.isMoving then --This is in release because at first it was checking for a release and I feel it still fits here lol
+    self.currentAnimation = self.animations.walk
+    self.stopFrame = 1
   end
-
-  if inputs:released "jump" then
-    self.jumpTimer = 0.05
-  end
-end
-
-function player:controls()
-  player:pressed()
-  player:released()
-end
-
-function player:jump()
-  self.yV = -self.jumpSpeed
-  self:setLinearVelocity(self.xV, self.yV)
-  self.jumpTimer = self.jumpTime
 end
 
 return player

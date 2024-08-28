@@ -56,13 +56,13 @@ function love.draw()
 
       entities:draw() --All entities get drawn here
 
-
       gameLevel:drawLayer(gameLevel.layers["forgeground"]) --Map layer gets drawn
       gameLevel:drawLayer(gameLevel.layers["forgeground2"]) --Map layer gets drawn
 
+
       shaders:draw() --Shader effects
 
-      --debugDraw() --Draw debug colliders and hitboxes
+      debugDraw() --Draw debug colliders and hitboxes
 
     camera:detach() --Stops drawing from the camera"s pov
 

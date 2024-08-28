@@ -9,11 +9,11 @@ function titlescreen:load()
   self.song:play()
 
 
-  self.animation = player.animations.right.walk:clone()
+  self.animation = player.animations.walk:clone()
 
   self.logo = love.graphics.newImage("sprites/ui/cavestory.png")
 
-  require "src/tools/titlescreenButtons" --Less clutter for making buttons
+  require("src/tools/titlescreenButtons") --Less clutter for making buttons
 end
 
 function titlescreen:update()
@@ -44,14 +44,17 @@ end
 
 function titlescreen:startGame()
   --level.circleSize = level.circleMaxSize
-  level:warp("testLevel1", nil, nil, true)
 
-  self.song:stop()
+  if not levelsong then
+    self.song:stop()
 
-  levelsong = love.audio.newSource("music/Gestation.ogg", "stream")
-  levelsong:setLooping(true)
+    level:warp("testLevel1", nil, nil, true)
 
-  levelsong:play()
+    levelsong = love.audio.newSource("music/Gestation.ogg", "stream")
+    levelsong:setLooping(true)
+
+    levelsong:play()
+  end
 end
 
 function titlescreen:pressed()

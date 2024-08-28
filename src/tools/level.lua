@@ -42,6 +42,8 @@ function level:load(mapName, destX, destY)
   loadMapColliders("environment", water, "water")
   loadMapColliders("warp", warps, "warp")
 
+  tiledColliders("forgeground", platforms, "platform")
+
   enemies:spawn()
 
   background:load(gameLevel.properties.background)
