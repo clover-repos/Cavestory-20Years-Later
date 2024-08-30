@@ -5,6 +5,8 @@
  </editorsettings>
  <properties>
   <property name="background" value="background2"/>
+  <property name="darkness" type="bool" value="true"/>
+  <property name="music" value="Gestation"/>
  </properties>
  <tileset firstgid="1" name="darkCave" tilewidth="16" tileheight="16" tilecount="80" columns="16">
   <image source="../tilesets/darkCave.png" width="256" height="80"/>
@@ -200,13 +202,13 @@
   <object id="225" x="0" y="237" width="1" height="21"/>
  </objectgroup>
  <objectgroup id="8" name="warp">
-  <object id="211" name="testLevel2" type="door" x="479" y="234" width="20" height="6">
+  <object id="211" name="testLevel2" type="door" x="479" y="238" width="20" height="2">
    <properties>
     <property name="destX" type="int" value="407"/>
     <property name="destY" type="int" value="297"/>
    </properties>
   </object>
-  <object id="224" name="testLevel2" type="door" x="18" y="266" width="12" height="22"/>
+  <object id="224" name="testLevel2" type="door" x="18" y="286" width="12" height="2"/>
  </objectgroup>
  <objectgroup id="6" name="environment" visible="0">
   <object id="187" x="175" y="226" width="126" height="81"/>

@@ -5,11 +5,12 @@ entities = {}
 
 function entities:load()
   --Require section
-  player = require("src/entities/player")
+  require("src/entities/player")
 
   require("src/entities/enemy")
 
   --Load section
+  player = playerInit() --Creates new player object
   player:load()
 
   enemies:load()

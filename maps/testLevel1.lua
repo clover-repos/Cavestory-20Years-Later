@@ -12,7 +12,9 @@ return {
   nextlayerid = 10,
   nextobjectid = 226,
   properties = {
-    ["background"] = "background2"
+    ["background"] = "background2",
+    ["darkness"] = true,
+    ["music"] = "Gestation"
   },
   tilesets = {
     {
@@ -804,9 +806,9 @@ return {
           type = "door",
           shape = "rectangle",
           x = 479,
-          y = 234,
+          y = 238,
           width = 20,
-          height = 6,
+          height = 2,
           rotation = 0,
           visible = true,
           properties = {
@@ -820,9 +822,9 @@ return {
           type = "door",
           shape = "rectangle",
           x = 18,
-          y = 266,
+          y = 286,
           width = 12,
-          height = 22,
+          height = 2,
           rotation = 0,
           visible = true,
           properties = {}

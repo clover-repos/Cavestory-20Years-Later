@@ -542,9 +542,9 @@ return {
           type = "door",
           shape = "rectangle",
           x = 402,
-          y = 282,
+          y = 302,
           width = 12,
-          height = 22,
+          height = 2,
           rotation = 0,
           visible = true,
           properties = {

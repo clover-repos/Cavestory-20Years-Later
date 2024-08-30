@@ -10,6 +10,8 @@ level.transition = "idle"
 level.circleColor = {0.05, 0.05, 0.2}
 
 function level:warp(mapName, destX, destY, middle)
+  if self.transition ~= 'idle' then return end
+
   self.transition = "open"
 
   self.warpDest, self.destX, self.destY, self.middle = mapName, destX, destY, middle
@@ -98,6 +100,8 @@ function level:update()
     self.circleSize = self.circleSize + self.circleGrowth * publicDT
 
     if self.circleSize >= self.circleMaxSize then
+      player.currentAnimation = player.animations.walk --Resets animation
+
       self.transition = "close"
 
       self:load(self.warpDest, self.destX, self.destY)
