@@ -5,7 +5,6 @@
  </editorsettings>
  <properties>
   <property name="background" value="background2"/>
-  <property name="music" value=""/>
  </properties>
  <tileset firstgid="1" name="darkCave" tilewidth="16" tileheight="16" tilecount="80" columns="16">
   <image source="../tilesets/darkCave.png" width="256" height="80"/>

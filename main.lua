@@ -60,9 +60,9 @@ function love.draw()
       gameLevel:drawLayer(gameLevel.layers["forgeground2"]) --Map layer gets drawn
 
 
-      shaders:draw() --Shader effects
+      if gameLevel.isDark then shaders:draw() end --Shader effects
 
-      debugDraw() --Draw debug colliders and hitboxes
+      --debugDraw() --Draw debug colliders and hitboxes
 
     camera:detach() --Stops drawing from the camera"s pov
 

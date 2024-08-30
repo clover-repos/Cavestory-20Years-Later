@@ -29,6 +29,7 @@ function level:load(mapName, destX, destY)
 
     gamestate = playstate
   else
+    self.song = love.audio.newSource("music/empty.ogg", "stream")
     self.notFirst = true
   end
 
@@ -47,6 +48,24 @@ function level:load(mapName, destX, destY)
   enemies:spawn()
 
   background:load(gameLevel.properties.background)
+  gameLevel.isDark = gameLevel.properties.darkness
+
+  if gameLevel.properties.music then
+    if self.prevSongName == gameLevel.properties.music and self.song:isPlaying() then return end
+
+    if self.song:isPlaying() then self.song:stop() end
+
+    self.song = nil --I'm scared of ram leaks
+
+    self.song = love.audio.newSource("music/" .. gameLevel.properties.music .. ".ogg", "stream")
+    self.song:setLooping(true)
+
+    self.song:play()
+
+    self.prevSongName = gameLevel.properties.music
+  else
+    if self.song:isPlaying() then self.song:stop() end
+  end
 end
 
 function level:update()

@@ -12,8 +12,7 @@ return {
   nextlayerid = 10,
   nextobjectid = 226,
   properties = {
-    ["background"] = "background2",
-    ["music"] = ""
+    ["background"] = "background2"
   },
   tilesets = {
     {

@@ -17,7 +17,7 @@ function player:load()
   self.gravity = gravity
 
   self.acceleration = 2000
-  self.friction = 200
+  self.friction = 350
 
   self.isMoving = nil
 
@@ -31,7 +31,8 @@ function player:load()
   self.animations = {}
 
   self.animations.walk = anim8.newAnimation(self.animationCell("1-4", 1), 0.1625)
-  self.animations.look = anim8.newAnimation(self.animationCell("8-9", 1), 0.1)
+  self.animations.look = anim8.newAnimation(self.animationCell(9, 1), 0.1)
+  self.animations.jumpLook = anim8.newAnimation(self.animationCell(8, 1), 0.1)
 
   self.currentAnimation = self.animations.walk
   self.dir = "right"
@@ -48,7 +49,7 @@ end
 
 
 function player:OnGround()
-  local querys = world:queryRectangleArea(self:getX() - self.width / 2 + 0.25, self:getY() + self.height / 2 - 1.25, self.width - 0.5, 3, {"platform", "enemy"})
+  local querys = world:queryRectangleArea(self:getX() - self.width / 2, self:getY() + self.height / 2 - 1.25, self.width, 3, {"platform", "enemy"})
 
   if #querys > 0 then
     return true
@@ -56,7 +57,7 @@ function player:OnGround()
 end
 
 function player:HitCeiling()
-  local querys = world:queryRectangleArea(self:getX() - self.width / 2, self:getY() - self.height / 2 - 2, self.width, 2, {"platform", "enemy"})
+  local querys = world:queryRectangleArea(self:getX() - self.width / 2, self:getY() - self.height / 2 - 1, self.width, 2, {"platform", "enemy"})
 
   if #querys > 0 then
     return true
@@ -64,13 +65,13 @@ function player:HitCeiling()
 end
 
 function player:hitWarp()
-  local querys = world:queryRectangleArea(self:getX() - self.width / 2 - 1, self:getY() - self.height / 2 - 1, self.width + 2, self.height + 2, {"warp"})
+  local querys = world:queryRectangleArea(self:getX() - self.width / 2, self:getY() - self.height / 2 - 1, self.width, self.height + 2, {"warp"})
 
   return querys
 end
 
 
-function player:getPositionOnScreen()
+function player:getPositionOnScreen() --This is rip from this github repo: kyleschuab/legend-of-lua
   local px, py = player:getPosition()
 
   local mapW = (gameLevel.width * gameLevel.tilewidth)-- * scale
@@ -184,18 +185,48 @@ function player:physics(dt)
 end
 
 function player:jump(dt)
-  if inputs:down "jump" and self:OnGround() then
+  if inputs:pressed "jump" and self:OnGround() then
     self.yV = -100
+    self.jumpTimer = 0.3
+  end
+
+  if self.isJumping then --Different check needs to happen even if player is off the ground
+    if self.jumpTimer > 0 then
+      self.jumpTimer = self.jumpTimer - dt
+    end
+
+    if self.jumpTimer <= 0 then
+      self.yV = self.yV + 200 * dt
+
+      if self.yV > self.gravity then
+        self.yV = self.gravity
+
+        self.isJumping = nil --Ends jump
+      end
+    end
+  end
+
+  if inputs:released "jump" and self.isJumping then
+    self.jumpTimer = 0
+  end
+
+  if self:HitCeiling() and self.yV < 0 then
+    self.jumpTimer = 0
+    self.yV = 0
+
+    camera:shake(0.3, 1.5, 0.1)
   end
 end
 
 function player:applyGravity(dt)
+  if self.yV < 0 then self.isJumping = true return end
+
   self.yV = self.yV + self.gravity * dt
 
   if self.yV > self.gravity then self.yV = self.gravity end
 
   if self:OnGround() then
-    self.yV = 36
+    self.yV = self.gravity / 4
     if not self.isMoving then self.yV = 0 end
   end
 end
@@ -205,16 +236,28 @@ function player:pressed()
     self.dir = "right"
   elseif inputs:pressed "left" then
     self.dir = "left"
-  elseif inputs:pressed "down" then
+  elseif inputs:pressed "down" and self:OnGround() then
     self.currentAnimation = self.animations.look
-    self.stopFrame = 2
+    self.stopFrame = 1
+  elseif inputs:down "down" and not self:OnGround() then
+    self.currentAnimation = self.animations.jumpLook
+    self.stopFrame = 1
   end
 end
 
 function player:released()
-  if self.isMoving then --This is in release because at first it was checking for a release and I feel it still fits here lol
-    self.currentAnimation = self.animations.walk
-    self.stopFrame = 1
+  if self.isMoving or inputs:pressed "jump" then
+    if self.currentAnimation == self.animations.look then
+      self.currentAnimation = self.animations.walk
+      self.stopFrame = 1
+    end
+  end
+
+  if self:OnGround() or inputs:released "down" then
+    if self.currentAnimation == self.animations.jumpLook then
+      self.currentAnimation = self.animations.walk
+      self.stopFrame = 1
+    end
   end
 end
 

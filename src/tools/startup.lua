@@ -35,7 +35,7 @@ shaders:load()
 
 titlescreen:load()
 
-level:load("testLevel1")
+level:load("MimigaVillage")
 
 --Hide mouse
 love.mouse.setVisible(false)

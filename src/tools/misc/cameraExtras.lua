@@ -60,6 +60,6 @@ function camera:shakeIntern()
 end
 
 function camera:shake(time, power, reset)
-	self.time, self.power, self.reset = time, power, reset
+	self.time, self.power, self.reset = time, power / 4 * scale, reset
 	self.resetRaw = reset
 end

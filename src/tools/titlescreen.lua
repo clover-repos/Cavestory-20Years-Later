@@ -17,6 +17,8 @@ function titlescreen:load()
 end
 
 function titlescreen:update()
+  if level.song:isPlaying() then level.song:stop() end
+
   self.animation:update(publicDT)
   titlescreen:pressed() --Input
 
@@ -45,16 +47,9 @@ end
 function titlescreen:startGame()
   --level.circleSize = level.circleMaxSize
 
-  if not levelsong then
-    self.song:stop()
+  self.song:stop()
 
-    level:warp("testLevel1", nil, nil, true)
-
-    levelsong = love.audio.newSource("music/Gestation.ogg", "stream")
-    levelsong:setLooping(true)
-
-    levelsong:play()
-  end
+  level:warp("MimigaVillage", nil, nil, true)
 end
 
 function titlescreen:pressed()
