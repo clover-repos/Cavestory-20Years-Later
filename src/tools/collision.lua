@@ -99,6 +99,13 @@ function tiledColliders(layerArg, tablename, class)
             collider:setCollisionClass(class)
           end
 
+          collider.width = obj.width
+          collider.height = obj.height
+
+          collider.name = obj.name
+          collider.properties = obj.properties
+          collider.class = obj.type
+
           table.insert(tablename, collider)
         end
       end

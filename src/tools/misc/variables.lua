@@ -6,7 +6,7 @@ variables = {}
 function variables:load()
   gravity = 60
 
-  defaultScale = 5
+  defaultScale = 4
 
   scale = defaultScale --Just needs to be a number, so it will just be the defualt here
   preferedScreenHeight = 1080

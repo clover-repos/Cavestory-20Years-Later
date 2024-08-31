@@ -14,11 +14,11 @@ function playerInit()
 
     self.xV, self.yV = 0, 0
 
-    self.speed = 50
+    self.speed = 62.5
     self.gravity = gravity
 
-    self.acceleration = 300
-    self.friction = 90
+    self.acceleration = 700
+    self.friction = 100
 
     self.isMoving = nil
 
@@ -49,20 +49,22 @@ function playerInit()
     self.walkSoundTimer = 0.2
   end
 
-    function player:warps()
-    player:setPreSolve(function(c1, c2, coll)
-      if c1.collision_class == "player" and c2.collision_class == "platform" then
-        if c2.name == "oneway" then
-          if c1:getY() + c1.height / 2 > c2:getY() - c2.height / 2 then
+  function player:warps()
+    self:setPreSolve(
+      function(c1, c2, coll)
+        if c1.collision_class == "player" and c2.collision_class == "platform" then
+          if c2.name == "oneway" then
+            if c1:getY() + c1.height / 2 > c2:getY() - c2.height / 2 then
+              coll:setEnabled(false)
+            end
+          end
+        elseif c1.collision_class == "player" and c2.collision_class == "warp" then
+          if c2.class == "door" then
             coll:setEnabled(false)
           end
         end
-      elseif c1.collision_class == "player" and c2.collision_class == "warp" then
-        if c2.class == "door" then
-          coll:setEnabled(false)
-        end
       end
-    end)
+    )
 
     if #self:hitWarp() > 0 then
       local warp = self:hitWarp()[1]
