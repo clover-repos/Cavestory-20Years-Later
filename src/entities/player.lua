@@ -2,9 +2,9 @@
 
 
 function playerInit()
-  local width, height = 4, 16
+  local width, height = 4, 15.25
 
-  local player = world:newBSGRectangleCollider(30, 288 - height, width, height, 0)
+  local player = world:newBSGRectangleCollider(280, 288 - height, width, height, 0.2)
 
   function player:load()
     self:setFixedRotation(true)
@@ -14,16 +14,16 @@ function playerInit()
 
     self.xV, self.yV = 0, 0
 
-    self.speed = 62.5
+    self.speed = 62
     self.gravity = gravity
 
-    self.acceleration = 700
-    self.friction = 100
+    self.acceleration = 625
+    self.friction = 180
 
     self.isMoving = nil
 
     self.jumpTimer = 0
-    self.jumpSpeed = -800
+    self.jumpSpeed = -700
 
     --
 
@@ -128,6 +128,23 @@ function playerInit()
     return x, y
   end
 
+  function player:water()
+    if self:enter("water") then
+      self.gravity = gravity / 2.25
+      self.jumpSpeed = -500
+      self.speed = 45
+    end
+
+    if self:exit("water") then
+      self.gravity = gravity
+      self.jumpSpeed = -700
+      self.speed = 62.5
+
+      if not self:OnGround() then
+        self.yV = self.jumpSpeed / 2
+      end
+    end
+  end
 
   function player:update(dt)
     self:pressed()
@@ -202,7 +219,7 @@ function playerInit()
           self.xV = self.xV + self.acceleration * dt
 
           if self.xV > self.speed then
-            self.xV = self.speed
+            self.xV = self.xV - 100 * dt
           end
         end
       end
@@ -212,7 +229,7 @@ function playerInit()
           self.xV = self.xV - self.acceleration * dt
 
           if self.xV < -self.speed then
-            self.xV = -self.speed
+            self.xV = self.xV + 100 * dt
           end
         end
       end
@@ -229,6 +246,8 @@ function playerInit()
         if self.xV < 0 then self.xV = 0 end
       end
     end
+
+    self:water()
   end
 
   function player:jump(dt)
@@ -269,12 +288,12 @@ function playerInit()
   function player:applyGravity(dt)
     if self.yV < 0 then self.isJumping = true return end
 
-    self.yV = self.yV + 40 * dt
+    self.yV = self.yV + 50 * dt
 
     if self.yV > self.gravity then self.yV = self.gravity end
 
     if self:OnGround() then
-      self.yV = self.gravity / 2
+      self.yV = 40
       if not self.isMoving then self.yV = 0 end
     end
   end

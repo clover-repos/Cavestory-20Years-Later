@@ -12,17 +12,6 @@ function startCollision()
   world:addCollisionClass("player", {ignores = {"water"} } )
 end
 
-function normalize(x, y)
-    local normalizeFactor = math.sqrt(2)
-
-    if x ~= 0 and y ~= 0 then
-        x = x / normalizeFactor
-        y = y / normalizeFactor
-    end
-
-    return x, y
-end
-
 function loadMapColliders(layer, tablename, class, width, height)
   if type(tablename) ~= "table" then
     error("Make sure you pass in a table for your second argument.")

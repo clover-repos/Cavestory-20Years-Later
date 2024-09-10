@@ -4,7 +4,7 @@
 variables = {}
 
 function variables:load()
-  gravity = 60
+  gravity = 55
 
   defaultScale = 4
 

@@ -49,7 +49,7 @@ function titlescreen:startGame()
 
   self.song:stop()
 
-  level:warp("testLevel1", nil, nil, true)
+  level:warp("MimigaVillage", nil, nil, true)
 end
 
 function titlescreen:pressed()
