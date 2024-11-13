@@ -4,7 +4,7 @@
 variables = {}
 
 function variables:load()
-  gravity = 55
+  gravity = 100
 
   defaultScale = 4
 
@@ -32,6 +32,8 @@ function variables:load()
   end
 
   variables:update()
+
+  if touchscreen then love.mouse.setVisible(false) end
 end
 
 function variables:update()
