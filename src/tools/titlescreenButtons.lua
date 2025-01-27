@@ -20,6 +20,7 @@ titlescreen.buttonLocations = {
       call = function()
         titlescreen.location = 2
         titlescreen.buttons = titlescreen.buttonLocations[titlescreen.location]
+        titlescreen.selectedButton = 3
       end
     },
     {
@@ -50,6 +51,7 @@ titlescreen.buttonLocations = {
 
       call = function()
         titlescreen.location = 1
+        titlescreen.selectedButton = 2
         titlescreen.buttons = titlescreen.buttonLocations[titlescreen.location]
       end
     }
