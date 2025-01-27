@@ -1,52 +1,77 @@
 --Titlescreen buttons functions and variables
 titlescreen.nextPress = 0
 
+titlescreen.location = 1
+
 titlescreen.selectedButton = 1
-titlescreen.buttons = {
+
+titlescreen.buttonLocations = {
   {
-    text = "Start game!",
+    {
+      text = "Start game!",
 
-    call = function()
-      titlescreen:startGame()
-    end
-  },
-  {
-    text = "Exit...",
-
-    call = function()
-      love.event.quit()
-    end
-  },
-  {
-    text = "Settings.",
-
-    call = function()
-      if titlescreen.buttons[1].text ~= "Keybinding." then
-        titlescreen.buttons[1].text = "Keybinding."
-        titlescreen.buttons[2].text = "Save files."
-        titlescreen.buttons[3].text = "[X]  Go back..."
-
-        titlescreen.buttons[1].call = function()end
-        titlescreen.buttons[2].call = function()end
-      else
-        titlescreen.buttons[1].text = "Start game!"
-        titlescreen.buttons[2].text = "Exit..."
-        titlescreen.buttons[3].text = "Settings."
-
-        titlescreen.buttons[1].call = function() titlescreen:startGame() end
-        titlescreen.buttons[2].call = function() love.event.quit() end
+      call = function()
+        titlescreen:startGame()
       end
-    end
+    },
+    {
+      text = "Settings.",
+
+      call = function()
+        titlescreen.location = 2
+        titlescreen.buttons = titlescreen.buttonLocations[titlescreen.location]
+      end
+    },
+    {
+      text = "Exit...",
+
+      call = function()
+        love.event.quit()
+      end
+    }
+  },
+  {
+    {
+      text = "Keybinds.",
+
+      call = function()
+
+      end
+    },
+    {
+      text = "Audio",
+
+      call = function()
+
+      end
+    },
+    {
+      text = "Go back...",
+
+      call = function()
+        titlescreen.location = 1
+        titlescreen.buttons = titlescreen.buttonLocations[titlescreen.location]
+      end
+    }
   }
 }
 
+titlescreen.buttons = titlescreen.buttonLocations[titlescreen.location]
+
 titlescreen.lastButton = #titlescreen.buttons
 
+titlescreen.control = {}
 
-function titlescreen.buttons.Down()
+function titlescreen.control.Down()
   if titlescreen.nextPress > 0 then
     return
   end
+
+  if titlescreen.move:isPlaying() then
+    titlescreen.move:stop()
+  end
+
+  titlescreen.move:play()
 
   titlescreen.selectedButton = titlescreen.selectedButton + 1
 
@@ -57,10 +82,16 @@ function titlescreen.buttons.Down()
   titlescreen.nextPress = 0.2
 end
 
-function titlescreen.buttons.Up()
+function titlescreen.control.Up()
   if titlescreen.nextPress > 0 then
     return
   end
+
+  if titlescreen.move:isPlaying() then
+    titlescreen.move:stop()
+  end
+
+  titlescreen.move:play()
 
   titlescreen.selectedButton = titlescreen.selectedButton - 1
 

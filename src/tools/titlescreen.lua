@@ -6,6 +6,9 @@ function titlescreen:load()
   self.song = love.audio.newSource("music/TitleTheme.ogg", "stream")
   self.song:setLooping(true)
 
+  self.move = love.audio.newSource("sounds/ui/move.ogg", "static")
+  self.select = love.audio.newSource("sounds/ui/select.ogg", "static")
+
   self.song:play()
 
 
@@ -54,13 +57,18 @@ end
 
 function titlescreen:pressed()
   if inputs:pressed "action" then
+    if self.select:isPlaying() then
+      self.select:stop()
+    end
+
+    self.select:play()
     self.buttons[self.selectedButton]:call()
   end
 
   if inputs:down "up" then
-    self.buttons.Up()
+    self.control.Up()
   elseif inputs:down "down" then
-    self.buttons.Down()
+    self.control.Down()
   end
 end
 
