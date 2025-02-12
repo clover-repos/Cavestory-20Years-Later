@@ -75,7 +75,7 @@ function playerInit()
     end
   end
 
-  function player:OnGround()
+  function player:onGround()
     local querys = world:queryRectangleArea(self:getX() - self.width / 2, self:getY() + self.height / 2 - 1.25, self.width, 3, {"platform", "enemy"})
 
     if #querys > 0 then
@@ -140,7 +140,7 @@ function playerInit()
       self.jumpSpeed = -700
       self.speed = 62.5
 
-      if not self:OnGround() then
+      if not self:onGround() then
         self.yV = self.jumpSpeed / 2
       end
     end
@@ -163,7 +163,7 @@ function playerInit()
     if self.isMoving then
       self.currentAnimation:update(dt)
 
-      if self:OnGround() then
+      if self:onGround() then
         self.walkSoundTimer = self.walkSoundTimer - dt
 
         if self.walkSoundTimer <= 0 then
@@ -190,7 +190,7 @@ function playerInit()
     local a = self.animations
 
     if ca == a.walk then
-      if not self:OnGround() then
+      if not self:onGround() then
         if self.yV > 0 then
           self.stopFrame = 2
         else
@@ -205,10 +205,17 @@ function playerInit()
   end
 
   function player:draw()
+    local x, y = player:getPosition()
+
+    if not self.isMoving and self:onGround() then
+      x = math.round(x)
+      y = math.round(y)-0.25
+    end
+
     if self.dir == "right" then
-      self.currentAnimation:draw(self.spritesheet, self:getX() - 8, self:getY() - self.height / 2)
+      self.currentAnimation:draw(self.spritesheet, x - 8, y - self.height / 2)
     else
-      self.currentAnimation:draw(self.spritesheet, self:getX() + 8, self:getY() - self.height / 2, nil, -1, 1)
+      self.currentAnimation:draw(self.spritesheet, x + 8, y - self.height / 2, nil, -1, 1)
     end
   end
 
@@ -251,7 +258,7 @@ function playerInit()
   end
 
   function player:jump(dt)
-    if inputs:pressed "jump" and self:OnGround() then
+    if inputs:pressed "jump" and self:onGround() then
       self.jumpTimer = 0.155
       self.yV = -1
     end
@@ -292,7 +299,7 @@ function playerInit()
 
     if self.yV > self.gravity then self.yV = self.gravity end
 
-    if self:OnGround() then
+    if self:onGround() then
       self.yV = 40
       if not self.isMoving then self.yV = 0 end
     end
@@ -303,20 +310,20 @@ function playerInit()
       self.dir = "right"
     elseif inputs:pressed "left" then
       self.dir = "left"
-    elseif inputs:pressed "down" and self:OnGround() then
+    elseif inputs:pressed "down" and self:onGround() then
       self.currentAnimation = self.animations.look
       self.stopFrame = 1
 
       if #self:hitWarp() > 0 then
         local warp = self:hitWarp()[1]
 
-        if warp.class == "door" and not self.isMoving and self:OnGround() then
+        if warp.class == "door" and not self.isMoving and self:onGround() then
           level:warp(warp.name, warp.properties.destX, warp.properties.destY)
         end
       else
         -- ?
       end
-    elseif inputs:down "down" and not self:OnGround() then
+    elseif inputs:down "down" and not self:onGround() then
       self.currentAnimation = self.animations.jumpLook
       self.stopFrame = 1
     end
@@ -330,7 +337,7 @@ function playerInit()
       end
     end
 
-    if self:OnGround() or inputs:released "down" then
+    if self:onGround() or inputs:released "down" then
       if self.currentAnimation == self.animations.jumpLook then
         self.currentAnimation = self.animations.walk
         self.stopFrame = 1

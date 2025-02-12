@@ -517,7 +517,7 @@ return {
       objects = {
         {
           id = 30,
-          name = "testLevel1",
+          name = "testLevel11",
           type = "door",
           shape = "rectangle",
           x = 402,
