@@ -4,7 +4,7 @@
 function playerInit()
   local width, height = 4, 15.25
 
-  local player = world:newBSGRectangleCollider(280, 288 - height, width, height, 0.2)
+  local player = world:newBSGRectangleCollider(240, 250 - height, width, height, 0.2)
 
   function player:load()
     self:setFixedRotation(true)
@@ -14,8 +14,11 @@ function playerInit()
 
     self.xV, self.yV = 0, 0
 
-    self.speed = 62
-    self.gravity = gravity
+    self.groundSpeed = 62
+    self.airSpeed = 40
+    self.speed = self.groundSpeed
+
+    self.gravity = 80
 
     self.acceleration = 625
     self.friction = 180
@@ -130,23 +133,23 @@ function playerInit()
 
   function player:water()
     if self:enter("water") then
-      self.gravity = gravity / 2.25
       self.jumpSpeed = -500
       self.speed = 45
     end
 
     if self:exit("water") then
-      self.gravity = gravity
       self.jumpSpeed = -700
       self.speed = 62.5
-
-      if not self:onGround() then
-        self.yV = self.jumpSpeed / 2
-      end
     end
   end
 
   function player:update(dt)
+    if self:onGround() then
+      self.speed = self.groundSpeed
+    else
+      self.speed = self.airSpeed
+    end
+
     self:pressed()
     self:released()
 
