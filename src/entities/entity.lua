@@ -1,4 +1,4 @@
---Calles all entity functions in here for less clutter
+--Calls all entity functions in here for less clutter
 
 
 entities = {}

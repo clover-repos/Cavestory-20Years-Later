@@ -10,7 +10,7 @@ return {
   tilewidth = 16,
   tileheight = 16,
   nextlayerid = 10,
-  nextobjectid = 226,
+  nextobjectid = 227,
   properties = {
     ["background"] = "background2",
     ["darkness"] = true,
@@ -733,6 +733,19 @@ return {
           y = 173,
           width = 1,
           height = 85,
+          rotation = 0,
+          visible = true,
+          properties = {}
+        },
+        {
+          id = 226,
+          name = "",
+          type = "",
+          shape = "rectangle",
+          x = 177,
+          y = 224,
+          width = 111,
+          height = 1,
           rotation = 0,
           visible = true,
           properties = {}

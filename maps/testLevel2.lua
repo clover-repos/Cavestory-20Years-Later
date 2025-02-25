@@ -10,7 +10,7 @@ return {
   tilewidth = 16,
   tileheight = 16,
   nextlayerid = 8,
-  nextobjectid = 35,
+  nextobjectid = 36,
   properties = {
     ["background"] = "background2"
   },
@@ -498,6 +498,19 @@ return {
           rotation = 0,
           visible = true,
           properties = {}
+        },
+        {
+          id = 35,
+          name = "",
+          type = "",
+          shape = "rectangle",
+          x = 241,
+          y = 303,
+          width = 63,
+          height = 1,
+          rotation = 0,
+          visible = true,
+          properties = {}
         }
       }
     },
@@ -517,7 +530,7 @@ return {
       objects = {
         {
           id = 30,
-          name = "testLevel11",
+          name = "testLevel1",
           type = "door",
           shape = "rectangle",
           x = 402,

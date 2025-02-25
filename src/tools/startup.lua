@@ -1,5 +1,11 @@
 --Config and import libraries and make variables...
 
+dev = {
+  mode = false,
+  flashSpeed = 0.5,
+  timer = 0.5,
+  drawFlash = true
+}
 
 --Imports:
 
@@ -22,6 +28,7 @@ require("src/shaders/shader")
 require("src/tools/background")
 require("src/tools/titlescreen")
 require("src/tools/misc/functions")
+require("src/tools/dialoge")
 
 --Loads
 variables:load()
@@ -34,6 +41,8 @@ entities:load()
 shaders:load()
 
 titlescreen:load()
+
+dialoge:load()
 
 level:load("testLevel1")
 

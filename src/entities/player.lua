@@ -1,10 +1,10 @@
---Player constructer I can now have as many players as I want!!!! Kinda like nodes in godot
+--Player
 
 
 function playerInit()
   local width, height = 4, 15.25
 
-  local player = world:newBSGRectangleCollider(240, 250 - height, width, height, 0.2)
+  local player = world:newBSGRectangleCollider(240, 230 - height, width, height, 0.2)
 
   function player:load()
     self:setFixedRotation(true)
@@ -14,11 +14,11 @@ function playerInit()
 
     self.xV, self.yV = 0, 0
 
-    self.groundSpeed = 62
+    self.groundSpeed = 68
     self.airSpeed = 40
     self.speed = self.groundSpeed
 
-    self.gravity = 80
+    self.gravity = 70
 
     self.acceleration = 625
     self.friction = 180

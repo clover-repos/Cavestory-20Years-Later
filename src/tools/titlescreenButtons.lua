@@ -40,10 +40,16 @@ titlescreen.buttonLocations = {
       end
     },
     {
-      text = "Audio",
+      text = "Devmode: Off",
 
       call = function()
-
+        if not dev.mode then
+          titlescreen.buttons[2].text = "Devmode: On"
+          dev.mode = true
+        else
+          dev.mode = false
+          titlescreen.buttons[2].text = "Devmode: Off"
+        end
       end
     },
     {

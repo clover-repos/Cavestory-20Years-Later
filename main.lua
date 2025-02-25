@@ -37,8 +37,22 @@ function love.update(dt)
     end
 
     entities:update(publicDT) --All entity update here
+    if love.keyboard.isDown("space") then
+      dialoge:newText("Hello, World!")
+    end
   elseif gamestate == titlestate then
     titlescreen:update(publicDT) --Updates titlescreen animations
+  end
+  if gamestate == textingstate then
+    dialoge:update()
+  end
+
+  if dev.mode then
+    dev.timer = dev.timer - publicDT
+    if dev.timer <= 0 then
+      dev.timer = dev.flashSpeed
+      dev.drawFlash = not dev.drawFlash
+    end
   end
 
   camera:update() --Updates camera position
@@ -47,7 +61,7 @@ end
 function love.draw()
   love.graphics.setFont(fontMain) --Set"s the font
 
-  if gamestate == playstate then
+  if gamestate == playstate or gamestate == textingstate then
     background:draw()
 
     camera:attach() --Draws from camera"s pov
@@ -57,22 +71,29 @@ function love.draw()
       entities:draw() --All entities get drawn here
 
       gameLevel:drawLayer(gameLevel.layers["forgeground"]) --Map layer gets drawn
-      gameLevel:drawLayer(gameLevel.layers["forgeground2"]) --Map layer gets drawn
+      gameLevel:drawLayer(gameLevel.layers["forgeground2"]) --I'm sure you can tell what this line does by now.
 
 
       if gameLevel.isDark then shaders:draw() end --Shader effects
 
-      --debugDraw() --Draw debug colliders and hitboxes
+      if dev.mode then debugDraw() end --Draw debug colliders and hitboxes if devmde is on
 
     camera:detach() --Stops drawing from the camera"s pov
 
+    if gamestate == textingstate then
+      dialoge:draw()
+    end
   elseif gamestate == titlestate then
     titlescreen:draw() --Draws titlescreen effects
   end
 
   if level.transition ~= "idle" then
-    love.graphics.setColor(level.circleColor)
-      love.graphics.circle("fill", level.x, level.y, level.circleSize)
-    love.graphics.setColor(1, 1, 1)
+    love.graphics.setColor(level.circleColor) --Sets the color to blue
+      love.graphics.circle("fill", level.x, level.y, level.circleSize) --Draws a circle hiding the black screen of the game reloading
+    love.graphics.setColor(1, 1, 1) --Sets the colors back to normal
+  end
+
+  if dev.mode and dev.drawFlash then
+    love.graphics.print("Devmode is on!") --It does what it says it does.
   end
 end

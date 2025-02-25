@@ -9,6 +9,7 @@ inputs = baton.new {
     up = {"key:up", "key:w", "axis:lefty-", "button:dpup"},
     down = {"key:down", "key:s", "axis:lefty+", "button:dpdown"},
     action = {"key:return", "button:a"},
+    secondAction = {"key:x", "button:b"},
     jump = {"key:z", "button:a"},
     fullscreen = {"key:f11", "button:start"}
   },
