@@ -38,7 +38,7 @@ function love.update(dt)
 
     entities:update(publicDT) --All entity update here
     if love.keyboard.isDown("space") then
-      dialoge:newText("Hello, World!")
+      dialoge:newText("Hello, World!", "sprites/entities/npcs/testFace.png")
     end
   elseif gamestate == titlestate then
     titlescreen:update(publicDT) --Updates titlescreen animations

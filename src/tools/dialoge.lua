@@ -51,13 +51,17 @@ function dialoge:update()
   end
 end
 
-function dialoge:newText(text)
+function dialoge:newText(text, face)
   self.text = text
   gamestate = textingstate
+  if face then self.image = love.graphics.newImage(face) else self.image = nil end
 end
 
 function dialoge:draw()
   local x, y = self.x+self.width-16*scale, self.y+self.height-16*scale
+
+  local offX
+  if self.image then offX = 48 * scale end
 
   love.graphics.setColor(19/255, 1/255, 108/255)
     love.graphics.rectangle("fill", self.x+8*scale, self.y+8*scale, self.width-16*scale, self.height-16*scale)
@@ -78,5 +82,7 @@ function dialoge:draw()
   love.graphics.draw(self.images[7], self.x, y, nil, scale)
   love.graphics.draw(self.images[9], x, y, nil, scale)
 
-  love.graphics.print(self.text:sub(1, self.index), self.x + 8*scale, self.y + 8*scale)
+  if self.image then love.graphics.draw(self.image, self.x + 4*scale, self.y, nil, scale) end
+
+  love.graphics.print(self.text:sub(1, self.index), self.x + 8*scale+(offX or 0), self.y + 8*scale)
 end
