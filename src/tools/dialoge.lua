@@ -52,6 +52,8 @@ function dialoge:update()
 end
 
 function dialoge:newText(text, face)
+  if level.transition ~= "idle" then return end
+
   self.text = text
   gamestate = textingstate
   if face then self.image = love.graphics.newImage(face) else self.image = nil end
