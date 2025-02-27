@@ -46,15 +46,23 @@ function dialoge:update()
     if inputs:pressed("action") then
       self.index = 1
       self.charTimer = self.timer
-      gamestate = playstate
+      print(self.texts[self.page])
+      if self.texts[self.page+1] then
+        self.page = self.page + 1
+        self.text = self.texts[self.page]
+      else
+        gamestate = playstate
+      end
     end
   end
 end
 
 function dialoge:newText(text, face)
   if level.transition ~= "idle" then return end
+  self.page = 1
 
-  self.text = text
+  self.text = text[self.page]
+  self.texts = text
   gamestate = textingstate
   if face then self.image = love.graphics.newImage(face) else self.image = nil end
 end
@@ -84,7 +92,7 @@ function dialoge:draw()
   love.graphics.draw(self.images[7], self.x, y, nil, scale)
   love.graphics.draw(self.images[9], x, y, nil, scale)
 
-  if self.image then love.graphics.draw(self.image, self.x + 4*scale, self.y, nil, scale) end
+  if self.image then love.graphics.draw(self.image, self.x + 4*scale, self.y, nil, scaleRaw) end
 
   love.graphics.print(self.text:sub(1, self.index), self.x + 8*scale+(offX or 0), self.y + 8*scale)
 end
