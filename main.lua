@@ -37,9 +37,6 @@ function love.update(dt)
     end
 
     entities:update(publicDT) --All entity update here
-    if love.keyboard.isDown("space") then
-      dialoge:newText(yap.bunny.text, yap.bunny.face)
-    end
   elseif gamestate == titlestate then
     titlescreen:update(publicDT) --Updates titlescreen animations
   end
