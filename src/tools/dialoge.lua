@@ -1,6 +1,8 @@
 dialoge = {}
 
 function dialoge:load()
+  require "src.tools.misc.yaps"
+
   self.text = ""
   self.index = 1
   self.timer = 0.075
