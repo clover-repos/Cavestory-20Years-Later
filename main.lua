@@ -41,14 +41,14 @@ function love.update(dt)
     titlescreen:update(publicDT) --Updates titlescreen animations
   end
   if gamestate == textingstate then
-    dialoge:update()
+    dialoge:update() --It... kinda updates the dialoge I mean dialoge:update probally should be enough of a hint.
   end
 
   if dev.mode then
-    dev.timer = dev.timer - publicDT
+    dev.timer = dev.timer - publicDT --Timer ticking down
     if dev.timer <= 0 then
-      dev.timer = dev.flashSpeed
-      dev.drawFlash = not dev.drawFlash
+      dev.timer = dev.flashSpeed --Reset timer
+      dev.drawFlash = not dev.drawFlash --Invert flash
     end
   end
 
