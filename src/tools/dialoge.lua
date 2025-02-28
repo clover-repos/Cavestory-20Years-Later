@@ -52,6 +52,7 @@ function dialoge:update()
       if self.texts[self.page+1] then
         self.page = self.page + 1
         self.text = self.texts[self.page]
+        self.image = love.graphics.newImage(self.imagesFace[self.page])
       else
         gamestate = playstate
       end
@@ -66,7 +67,12 @@ function dialoge:newText(text, face)
   self.text = text[self.page]
   self.texts = text
   gamestate = textingstate
-  if face then self.image = love.graphics.newImage(face) else self.image = nil end
+  if face then
+    self.imagesFace = face
+    self.image = love.graphics.newImage(self.imagesFace[self.page])
+  else
+    self.image = nil
+  end
 end
 
 function dialoge:draw()
