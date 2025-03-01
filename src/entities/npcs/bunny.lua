@@ -29,7 +29,7 @@ function bunny:load()
 
   self.animations = {}
 
-  self.animations.idle = anim8.newAnimation(self.animationCell("1-2", 1), {1, 0.1})
+  self.animations.idle = anim8.newAnimation(self.animationCell("1-2", 1), {1.5, 0.15})
   self.face = yap.bunny.face
   self.text = yap.bunny.text
 end

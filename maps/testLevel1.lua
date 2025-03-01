@@ -855,7 +855,7 @@ return {
       objects = {
         {
           id = 210,
-          name = "",
+          name = "chinfish",
           type = "",
           shape = "point",
           x = 236,
@@ -864,7 +864,9 @@ return {
           height = 0,
           rotation = 0,
           visible = true,
-          properties = {}
+          properties = {
+            ["dir"] = "left"
+          }
         }
       }
     },

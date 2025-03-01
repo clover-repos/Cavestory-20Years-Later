@@ -317,6 +317,13 @@ function playerInit()
       self.currentAnimation = self.animations.look
       self.stopFrame = 1
 
+      if not self.isMoving then
+        local npc = world:queryRectangleArea(self:getX() - self.width / 2, self:getY() - self.height / 2 - 1, self.width, 2, {"npc"})
+        if #npc > 0 then
+          dialoge:newText(npc[1].text, npc[1].face)
+        end
+      end
+
       if #self:hitWarp() > 0 then
         local warp = self:hitWarp()[1]
 

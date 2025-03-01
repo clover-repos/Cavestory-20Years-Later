@@ -211,7 +211,10 @@
   <object id="187" x="175" y="226" width="126" height="81"/>
  </objectgroup>
  <objectgroup id="7" name="enemies">
-  <object id="210" x="236" y="257">
+  <object id="210" name="chinfish" x="236" y="257">
+   <properties>
+    <property name="dir" value="left"/>
+   </properties>
    <point/>
   </object>
  </objectgroup>

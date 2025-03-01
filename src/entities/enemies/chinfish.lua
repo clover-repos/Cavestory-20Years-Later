@@ -6,11 +6,24 @@ chinfish = {}
 function chinfish:spawn()
   self.colliders = {}
 
-  loadMapColliders("enemies", self.colliders, "enemy", self.width, self.height)
+  for i, obj in ipairs(gameLevel.layers["enemies"].objects) do
+    if obj.name == "chinfish" then
+      collider = world:newBSGRectangleCollider(obj.x, obj.y, self.width, self.height, 0.25)
+
+      collider:setType("static")
+
+      collider:setCollisionClass("enemy")
+      collider.currentAnimation = self.animations.idle:clone()
+
+      table.insert(self.colliders, collider)
+    end
+  end
 
   for i, enemyC in ipairs(self.colliders) do
     enemyC.currentAnimation = self.animations.idle:clone()
-    enemyC.dir = gameLevel.layers["enemies"].objects[i].name
+    if gameLevel.layers["enemies"].objects[i].name == "chinfish" then
+      enemyC.dir = gameLevel.layers["enemies"].objects[i].properties["dir"]
+    end
   end
 end
 
