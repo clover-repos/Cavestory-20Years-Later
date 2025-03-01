@@ -41,7 +41,7 @@ function chinfish:draw()
     if enemyC.dir == "left" then
       enemyC.currentAnimation:draw(self.spritesheet, enemyC:getX() - self.width / 2, enemyC:getY() - self.height)
     else
-      enemyC.currentAnimation:draw(self.spritesheet, enemyC:getX() + self.width / 2, enemyC:getY() - self.height / 1.1, nil, -1, 1)
+      enemyC.currentAnimation:draw(self.spritesheet, enemyC:getX() + self.width / 2, enemyC:getY() - self.height, nil, -1, 1)
     end
   end
 end

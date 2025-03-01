@@ -38,6 +38,7 @@ function level:load(mapName, destX, destY)
   platforms = {}
   water = {}
   warps = {}
+  npcs = {}
 
   gameLevel = sti("maps/" .. mapName .. ".lua")
 
@@ -48,6 +49,7 @@ function level:load(mapName, destX, destY)
   tiledColliders("forgeground", platforms, "platform")
 
   enemies:spawn()
+  bunny:spawn()
 
   background:load(gameLevel.properties.background)
   gameLevel.isDark = gameLevel.properties.darkness
@@ -57,7 +59,7 @@ function level:load(mapName, destX, destY)
 
     if self.song:isPlaying() then self.song:stop() end
 
-    self.song = nil --I'm scared of ram leaks
+    self.song = nil --I'm scared of memeory leaks
 
     self.song = love.audio.newSource("music/" .. gameLevel.properties.music .. ".ogg", "stream")
     self.song:setLooping(true)
@@ -124,6 +126,10 @@ end
 function level:removeColliders()
   for i = 1, #chinfish.colliders do
     enemies.despawn(chinfish, i)
+  end
+
+  for i = 1, #bunny.colliders do
+    npc.despawn(bunny, i)
   end
 
   removeMapColliders(platforms)

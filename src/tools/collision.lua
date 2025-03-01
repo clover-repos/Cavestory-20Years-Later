@@ -5,16 +5,17 @@ function startCollision()
   world:addCollisionClass("platform")
   world:addCollisionClass("water")
   world:addCollisionClass("warp")
+  world:addCollisionClass("npc")
 
 
   world:addCollisionClass("enemy")
 
-  world:addCollisionClass("player", {ignores = {"water"} } )
+  world:addCollisionClass("player", {ignores = {"water", "npc"} } )
 end
 
 function loadMapColliders(layer, tablename, class, width, height)
   if type(tablename) ~= "table" then
-    error("Make sure you pass in a table for your second argument.")
+    error("Error on Arg2. Table expected.")
   end
 
   if gameLevel.layers[layer] then
@@ -34,6 +35,7 @@ function loadMapColliders(layer, tablename, class, width, height)
         collider = world:newBSGRectangleCollider(obj.x, obj.y, obj.width, obj.height, 0.25)
 
         collider.height = obj.height
+        collider.width = obj.width
       else
 
         local dVertices = {}
