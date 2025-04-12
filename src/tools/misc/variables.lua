@@ -3,6 +3,12 @@
 
 variables = {}
 
+function eventRun(event)
+  if event == "storyText1" then
+    dialoge:newText(yap.story.text)
+  end
+end
+
 function variables:load()
   gravity = 55
 

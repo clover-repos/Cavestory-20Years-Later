@@ -52,7 +52,7 @@ function dialoge:update()
       if self.texts[self.page+1] then
         self.page = self.page + 1
         self.text = self.texts[self.page]
-        self.image = love.graphics.newImage(self.imagesFace[self.page])
+        if self.image then self.image = love.graphics.newImage(self.imagesFace[self.page]) end
       else
         gamestate = playstate
       end

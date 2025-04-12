@@ -6,11 +6,12 @@ function startCollision()
   world:addCollisionClass("water")
   world:addCollisionClass("warp")
   world:addCollisionClass("npc")
+  world:addCollisionClass("event")
 
 
   world:addCollisionClass("enemy")
 
-  world:addCollisionClass("player", {ignores = {"water", "npc"} } )
+  world:addCollisionClass("player", {ignores = {"water", "npc", "event"} } )
 end
 
 function loadMapColliders(layer, tablename, class, width, height)

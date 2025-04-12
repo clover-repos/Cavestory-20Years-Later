@@ -48,11 +48,10 @@ function titlescreen:draw()
 end
 
 function titlescreen:startGame()
-  --level.circleSize = level.circleMaxSize
-
   self.song:stop()
 
-  level:warp("testLevel1", nil, nil, true)
+  level:warp("startMap", nil, nil, true)
+  player:setPosition(-500, -500)
 end
 
 function titlescreen:pressed()

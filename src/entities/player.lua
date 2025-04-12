@@ -144,6 +144,15 @@ function playerInit()
   end
 
   function player:update(dt)
+    do
+      local querys = world:queryRectangleArea(self:getX() - self.width / 2, self:getY() + self.height / 2, self.width, 1, {"event"})
+      if querys[1] then
+        local coll = querys[1]
+        eventRun(coll.name)
+        coll.name = "used"
+      end
+    end
+
     if self:onGround() then
       self.speed = self.groundSpeed
     else

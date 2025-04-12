@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.10" tiledversion="1.11.1" orientation="orthogonal" renderorder="right-down" width="1" height="1" tilewidth="16" tileheight="16" infinite="0" nextlayerid="9" nextobjectid="7">
+ <editorsettings>
+  <export target="startMap.lua" format="lua"/>
+ </editorsettings>
+ <properties>
+  <property name="darkness" type="bool" value="false"/>
+  <property name="music" value="heroend"/>
+ </properties>
+ <tileset firstgid="1" name="darkCave" tilewidth="16" tileheight="16" tilecount="80" columns="16">
+  <image source="../tilesets/darkCave.png" width="256" height="80"/>
+ </tileset>
+ <layer id="1" name="background" width="1" height="1">
+  <data encoding="csv">
+0
+</data>
+ </layer>
+ <layer id="2" name="forgeground" width="1" height="1">
+  <data encoding="csv">
+0
+</data>
+ </layer>
+ <layer id="3" name="forgeground2" width="1" height="1">
+  <data encoding="csv">
+0
+</data>
+ </layer>
+ <objectgroup id="4" name="warp">
+  <object id="1" name="testLevel1" x="-507" y="-458" width="25" height="1">
+   <properties>
+    <property name="destX" type="int" value="486"/>
+    <property name="destY" type="int" value="225"/>
+   </properties>
+  </object>
+ </objectgroup>
+ <objectgroup id="7" name="ground">
+  <object id="2" x="-510" y="-510" width="1" height="54"/>
+  <object id="3" x="-481" y="-510" width="1" height="52"/>
+  <object id="4" x="-509" y="-515" width="29" height="4"/>
+ </objectgroup>
+ <objectgroup id="5" name="enemies"/>
+ <objectgroup id="6" name="npcs"/>
+ <objectgroup id="8" name="event">
+  <object id="5" name="storyText1" x="-512" y="-485" width="41" height="16"/>
+ </objectgroup>
+</map>

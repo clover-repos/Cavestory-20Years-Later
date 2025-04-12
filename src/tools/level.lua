@@ -39,12 +39,15 @@ function level:load(mapName, destX, destY)
   water = {}
   warps = {}
   npcs = {}
+  npcs = {}
+  events = {}
 
   gameLevel = sti("maps/" .. mapName .. ".lua")
 
   loadMapColliders("ground", platforms, "platform")
   loadMapColliders("environment", water, "water")
   loadMapColliders("warp", warps, "warp")
+  loadMapColliders("event", events, "event")
 
   tiledColliders("forgeground", platforms, "platform")
 
@@ -113,12 +116,17 @@ function level:update()
     end
   end
 
+  if transition ~= "idle" then
+    self.finishedLoading = nil
+  end
+
   if self.transition == "close" then
     self.circleSize = self.circleSize - self.circleGrowth * publicDT
 
     if self.circleSize <= 0 then
       self.transition = "idle"
       self.middle = nil
+      self.finishedLoading = true
     end
   end
 end
@@ -135,4 +143,5 @@ function level:removeColliders()
   removeMapColliders(platforms)
   removeMapColliders(water)
   removeMapColliders(warps)
+  removeMapColliders(events)
 end

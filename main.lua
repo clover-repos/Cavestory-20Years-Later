@@ -41,7 +41,7 @@ function love.update(dt)
     titlescreen:update(publicDT) --Updates titlescreen animations
   end
   if gamestate == textingstate then
-    dialoge:update() --It... kinda updates the dialoge I mean dialoge:update probally should be enough of a hint.
+    dialoge:update() --It updates the dialoge dialoge:update probally should be enough of a hint.
   end
 
   if dev.mode then
